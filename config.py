@@ -14,16 +14,20 @@ import sys
 
 
 # Specify path
-path1 = os.path.expanduser('~')+'/Library/Application Support/Kindle/My Kindle Content'
-path2 = os.path.expanduser('~')+'/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/My Kindle Content'
+path1 = os.path.expanduser('~')+'/Library/Application Support/Kindle/My Kindle Content/'
+path2 = os.path.expanduser('~')+'/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/My Kindle Content/'
  
 # cd "/Users/giovanni/Library/Application Support/Kindle/My Kindle Content"
+# cd "/Users/giovanni.coppola/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/My Kindle Content"
+# checking the possible kindle folders
+if (os.path.exists(path1)):
+    kindle_path = path1
+elif (os.path.exists(path2)):
+    kindle_path = path2
+else:
+    print ("no kindle path")
+    
 
-isExist = os.path.exists(path1)
-#print(f"path1: {isExist}")
-
-isExist = os.path.exists(path2)
-#print(f"path2: {isExist}")
 
 def log(s, *args):
     if args:
@@ -36,4 +40,4 @@ def logF(log_message, file_name):
         f.write(log_message + "\n")
 
 
-KINDLE_DB = os.path.expanduser('~')+'/Library/Application Support/Kindle/My Kindle Content/book_asset.db'
+KINDLE_DB = kindle_path+'book_asset.db'

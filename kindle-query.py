@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+#New York – Sunny ☀️   🌡️+44°F (feels +39°F, 41%) 🌬️↘2mph 🌗 Tue Feb 14 06:18:23 2023
+#W7Q1 – 45 ➡️ 319 – 279 ❇️ 85
 
 import requests
 import os
@@ -56,15 +58,20 @@ def GetKindleData(myList):
 
 	myResults = []
 	#querystring = {"asins":"B00JGAS65Q, B003EY7IQI, B004DEPH3E","locale":"US"}
-	querystring = {"asins":myList[0],"locale":"US"}
+	for myBatch in myList: 
+		querystring = {"asins":myBatch,"locale":"US"}
 
-	headers = {
-		"X-RapidAPI-Key": "060192ca34msh77aa6624f8e5d93p186236jsn93b44b5109c8",
-		"X-RapidAPI-Host": "amazon-product-price-data.p.rapidapi.com"
-	}
+		headers = {
+			"X-RapidAPI-Key": "060192ca34msh77aa6624f8e5d93p186236jsn93b44b5109c8",
+			"X-RapidAPI-Host": "amazon-product-price-data.p.rapidapi.com"
+		}
 
-	response = requests.request("GET", url, headers=headers, params=querystring)
-	myResults.append(response.text)
+		response = requests.request("GET", url, headers=headers, params=querystring)
+		myResults.append(response.json())
+	
+	with open('kindle.json', 'w') as f:
+		json.dump(myResults, f,indent=4)
+	
 	return (myResults)
 
 

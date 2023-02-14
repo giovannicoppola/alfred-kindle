@@ -1,0 +1,94 @@
+[
+    [
+        {
+            "asin": "B079RLPFG7",
+            "product_name": "Leadership: In Turbulent Times",
+            "current_price": 13.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/41shayXKPgL.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B007A4V33M",
+            "product_name": "An Unexpected Twist (Kindle Single)",
+            "current_price": 0.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/41hzVMZrfvL.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B074TGPTF4",
+            "product_name": "Greater Gotham: A History of New York City from 1898 to 1919 (The History of NYC Series Book 2)",
+            "current_price": 19.24,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/512JR4QOGiL.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B002SAUBWM",
+            "product_name": "Gotham: A History of New York City to 1898 (The History of NYC Series)",
+            "current_price": 14.39,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/51IMe+l49SL.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B000JMLMXI",
+            "product_name": "Undefined",
+            "current_price": 0.0,
+            "is_prime": false,
+            "image_url": "Undefined.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B004IYIU7O",
+            "product_name": "In Patagonia (Penguin Classics)",
+            "current_price": 9.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/51Pn9qe1BML.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B06W2J89PV",
+            "product_name": "Grant",
+            "current_price": 16.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/41SGRZQeumL.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B006BAE842",
+            "product_name": "Lincoln",
+            "current_price": 17.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/51qk5yLFWIL.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B00QQIFERE",
+            "product_name": "By Heart: The Art of Memorizing Music",
+            "current_price": 5.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/31+zuK4-O0L.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        },
+        {
+            "asin": "B000XCQ4A0",
+            "product_name": "Andrew Carnegie",
+            "current_price": 12.99,
+            "is_prime": false,
+            "image_url": "https://m.media-amazon.com/images/I/41CaCnpR87L.jpg",
+            "locale": "US",
+            "currency_symbol": "$"
+        }
+    ]
+]
