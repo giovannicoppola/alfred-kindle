@@ -41,3 +41,5 @@ def logF(log_message, file_name):
 
 
 KINDLE_DB = kindle_path+'book_asset.db'
+#KINDLE_DB = os.path.expanduser('~')+'/Library/Application Support/Kindle/My Kindle Content/book_asset.db'
+XML_CACHE = os.path.expanduser('~')+'/Library/Application Support/Kindle/Cache/KindleSyncMetadataCache.xml'

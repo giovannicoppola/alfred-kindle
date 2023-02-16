@@ -6,9 +6,9 @@ import requests
 import os
 import sqlite3
 import json
-from config import KINDLE_DB, log, logF
+from config import KINDLE_DB, log, logF, XML_CACHE
 from time import time
-
+import xmltodict
 
 
 def getKindleDB():
@@ -75,10 +75,37 @@ def GetKindleData(myList):
 	return (myResults)
 
 
+def getXML(myFile):
+## Importing the XML table
+    
+	with open(myFile) as xml_file:
+		data_dict = xmltodict.parse(xml_file.read())
+		xml_file.close()
+	
+	#print (data_dict)
+	
+	with open('xml.json', 'w') as f:
+		json.dump(data_dict, f,indent=4)
+
+	myBooks = data_dict['response']['add_update_list']['meta_data']
+	for book in myBooks:
+		print (book['title']['#text'])
+	print (len(data_dict['response']['add_update_list']['meta_data']))
+	
+    
+
+
+    #orphanet = json.dumps(data_dict)
+    #orphanet = dict(json.dumps(data_dict))
+    #orphanet = eval (str(data_dict))
+
+
 def main():
 	main_start_time = time()
-	datab = getKindleDB()
-	GetKindleData(datab)
+	#datab = getKindleDB()
+	#GetKindleData(datab)
+	getXML(XML_CACHE)
+
 	main_timeElapsed = time() - main_start_time
 	log(f"\nscript duration: {round (main_timeElapsed,3)} seconds")
     
