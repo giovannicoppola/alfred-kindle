@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
-#New York – Sunny ☀️   🌡️+44°F (feels +39°F, 41%) 🌬️↘2mph 🌗 Tue Feb 14 06:18:23 2023
+#Sunny ☀️   🌡️+44°F (feels +39°F, 41%) 🌬️↘2mph 🌗 Tue Feb 14 06:18:23 2023
 #W7Q1 – 45 ➡️ 319 – 279 ❇️ 85
 
 import requests
 import os
 import sqlite3
 import json
-from config import KINDLE_DB, log, logF, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING
+from config import KINDLE_DB, log, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING, SEARCH_SCOPE
 from time import time
 import xmltodict
 import urllib.request
 import sys
 
 MYINPUT = sys.argv[1].casefold()
+
+    
 
 def getKindleDB():
 	db = sqlite3.connect(KINDLE_DB)
@@ -101,10 +103,39 @@ def getXML(myFile, downloaded):
 	result = {"items": []}
 	myBooks = data_dict['response']['add_update_list']['meta_data']
 	
-	myFilteredBooks = [i for i in myBooks if MYINPUT in i['title']['#text'].casefold()]
-	#myFilteredBooks = [i for i in myBooks if any(MYINPUT in s for s in i['authors']['author']['#text'])]
+	for myBook in myBooks:
+		if isinstance(myBook['authors']['author'], list):
+			myBook ['authorString'] = " - ".join (str(auth['#text']) for auth in myBook['authors']['author'])
+			
+		else:
+			myBook ['authorString'] = myBook['authors']['author']['#text']
+
 	
+	if SEARCH_SCOPE == "Title":
+		myFilteredBooks = [i for i in myBooks if MYINPUT in i['title']['#text'].casefold()]
+		
+	elif SEARCH_SCOPE == "Author":
+		myFilteredBooks = [i for i in myBooks if (MYINPUT in i['authorString'].casefold())]	
+	elif SEARCH_SCOPE == "Both":
+		myFilteredBooks = [i for i in myBooks if (MYINPUT in i['authorString'].casefold()) or (MYINPUT in i['title']['#text'].casefold())]
+		
 	
+	if MYINPUT and not myFilteredBooks:
+		result["items"].append({
+			"title": "No matches in your library",
+			"subtitle": "Try a different query",
+			"arg": "",
+			"icon": {
+				"path": "icons/Warning.png"
+				}
+			
+				})
+		#print (json.dumps(result))
+
+
+
+
+
 	for book in myFilteredBooks:
 		#print (book['title']['#text'])
 		
@@ -128,17 +159,11 @@ def getXML(myFile, downloaded):
 		else:
 			continue
 		
-		if isinstance(book['authors']['author'], list):
-			subString = " - ".join (str(auth['#text']) for auth in book['authors']['author'])
-			if MYINPUT in subString.casefold():
-				log("=========author match")
-		else:
-			subString = book['authors']['author']['#text']
 		
 		
 		result["items"].append({
 			"title": book['title']['#text']+BookSymbol,
-			'subtitle': subString,
+			'subtitle': book['authorString'],
 			'valid': True,
 			
 			"icon": {
@@ -147,18 +172,15 @@ def getXML(myFile, downloaded):
 			'arg': bookURL
 				}) 
 	log (len(data_dict['response']['add_update_list']['meta_data']))
+	log (len(myFilteredBooks))
 	
 	print (json.dumps(result))
 	
     
-
-
     
 
 def main():
 	main_start_time = time()
-	#datab = getKindleDB()
-	#GetKindleData(datab)
 	myContentBooks = getDownloadedBooks (KINDLE_CONTENT)
 	getXML(XML_CACHE, myContentBooks)
 	

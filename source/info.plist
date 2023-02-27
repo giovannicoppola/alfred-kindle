@@ -70,7 +70,7 @@ open "$1"</string>
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>kkin</string>
+				<string>{var:mainkeyword}</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -80,7 +80,7 @@ open "$1"</string>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>Wait until I refresh the database....</string>
+				<string>⏳...fetching Kindle info...</string>
 				<key>script</key>
 				<string>query=$1
 export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
@@ -94,7 +94,7 @@ python3 kindle-query.py "$1"
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Fetching Kindle info</string>
+				<string>alfred-kindle 📚</string>
 				<key>type</key>
 				<integer>5</integer>
 				<key>withspace</key>
@@ -129,6 +129,27 @@ python3 kindle-query.py "$1"
 	</dict>
 	<key>userconfigurationconfig</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>!k</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Keyword to launch `alfred-kindle`</string>
+			<key>label</key>
+			<string>Main Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>mainkeyword</string>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -168,6 +189,36 @@ python3 kindle-query.py "$1"
 			<string>checkbox</string>
 			<key>variable</key>
 			<string>SHOW_GHOST</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>Title</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Title</string>
+						<string>Title</string>
+					</array>
+					<array>
+						<string>Author</string>
+						<string>Author</string>
+					</array>
+					<array>
+						<string>Both</string>
+						<string>Both</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Search across book title, author, or both.</string>
+			<key>label</key>
+			<string>Search Scope</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>SEARCH_SCOPE</string>
 		</dict>
 	</array>
 	<key>version</key>
