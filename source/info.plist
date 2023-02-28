@@ -23,7 +23,7 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string></string>
+	<string>Browse and open your Kindle books</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -109,7 +109,60 @@ python3 kindle-query.py "$1"
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string># alfred-kindle 📚
+List and open your Kindle books with Alfred
+
+
+## Motivation ✅
+
+- Quickly list, search, and open your Kindle books
+
+
+## Setting up ⚙️
+
+- Alfred 5 with Powerpack license
+- Python3
+- Kindle app installed
+
+
+
+### Default settings 
+- In Alfred, open the 'Configure Workflow' menu in `alfred-kindle` preferences
+	- set the keyword for the workflow (default: `!k`)
+	- set the book content icon, i.e. if a book has been downloaded locally (default: 📘)
+	- show 'ghost' books (i.e. books not downloaded, or previously loaned)?  (default: yes)
+	- set search scope (default: 'Title')
+		- `Title`: search titles only
+		- `Author`: search authors only
+		- `Both`: search across titles and authors
+
+
+## Basic Usage 📖
+
+- launch with keyword (default: `!k`), or custom hotkey
+- `enter` ↩️ will open the book in Kindle (if downloaded) or the corresponding webpage on Amazon (if not downloaded)
+
+
+## Limitations &amp; known issues ⚠️
+
+- None for now, but I have not done extensive testing, let me know if you see anything!
+- tested with ~100 books. The book list is currently created on the fly, and book covers are downloaded if missing. Might be slower if your library has thousands of books, in which case a sqlite database it might be more efficient. Let me know if that is the case! 
+- tested with Python 3.9.13
+
+
+## Acknowledgments 😀
+
+- Thanks to the [Alfred forum](https://www.alfredforum.com) community!
+- Icon from [SF symbols](https://developer.apple.com/sf-symbols/)
+
+## Changelog 🧰
+
+- 02-28-2023: version 0.1
+
+
+## Feedback 🧐
+
+Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either on [Github](https://github.com/giovannicoppola/alfred-kindle), or on the [Alfred](https://www.alfredforum.com) forum.</string>
 	<key>uidata</key>
 	<dict>
 		<key>C201E860-5900-49B2-8980-4B8E5DA0A4C8</key>
@@ -182,7 +235,7 @@ python3 kindle-query.py "$1"
 				<string>Check to show 'ghost' books</string>
 			</dict>
 			<key>description</key>
-			<string>Books not downloaded, or previously loaned</string>
+			<string>Show books not downloaded locally, or previously loaned</string>
 			<key>label</key>
 			<string>Show 'ghost' books</string>
 			<key>type</key>
@@ -221,9 +274,11 @@ python3 kindle-query.py "$1"
 			<string>SEARCH_SCOPE</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
-	<string></string>
+	<string>0.1</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>https://github.com/giovannicoppola/alfred-kindle</string>
 </dict>
 </plist>

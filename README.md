@@ -43,8 +43,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 ## Default settings 
 - In Alfred, open the 'Configure Workflow' menu in `alfred-kindle` preferences
 	- set the keyword for the workflow (default: `!k`)
-	- set the book content icon, i.e. if a book has been downloaded locally.  (default: 📘)
-	- show 'ghost' books (i.e. books not downloaded, or previously loaned)?  (default: yes)
+	- set the book content icon, i.e. if a book has been downloaded locally (default: 📘)
+	- show 'ghost' books (i.e. books not downloaded, or previously loaned)? (default: yes)
 	- set search scope (default: 'Title')
 		- `Title`: search titles only
 		- `Author`: search authors only

@@ -55,10 +55,16 @@ def getKindleDB():
 		resultList.append(','.join(str(x) for x in result[i:i+10]))
 
 	return resultList
-	#print(resultList)
+	
 
 
 def GetKindleData(myList):
+	"""
+	
+	A function to get kindle information using a third party API.
+	Currently not used in this workflow
+
+	"""
 	url = "https://amazon-product-price-data.p.rapidapi.com/product"
 
 	myResults = []
@@ -67,7 +73,7 @@ def GetKindleData(myList):
 		querystring = {"asins":myBatch,"locale":"US"}
 
 		headers = {
-			"X-RapidAPI-Key": "060192ca34msh77aa6624f8e5d93p186236jsn93b44b5109c8",
+			"X-RapidAPI-Key": "INSERT API KEY HERE",
 			"X-RapidAPI-Host": "amazon-product-price-data.p.rapidapi.com"
 		}
 
@@ -82,12 +88,25 @@ def GetKindleData(myList):
 def getDownloadedBooks(basepath):
 	import os
 	myContentBooks = []
+	
 	# List all subdirectories using scandir()
-	with os.scandir(basepath) as entries:
-		for entry in entries:
-			if entry.is_dir():
-				myContentBooks.append(entry.name.split("_")[0])
-	return myContentBooks
+	try:
+		with os.scandir(basepath) as entries:
+			for entry in entries:
+				if entry.is_dir():
+					myContentBooks.append(entry.name.split("_")[0])
+		return myContentBooks
+	except:
+		result= {"items": [{
+        "title": "Error: Cannot find Kindle directory",
+        "subtitle": basepath,
+        "arg": "",
+        "icon": {
+
+                "path": "icons/Warning.png"
+            }
+        }]}
+		print (json.dumps(result))
 
 def getXML(myFile, downloaded):
 ## Importing the XML table
@@ -96,10 +115,7 @@ def getXML(myFile, downloaded):
 		data_dict = xmltodict.parse(xml_file.read())
 		xml_file.close()
 	
-	#print (data_dict)
 	
-	# with open('xml.json', 'w') as f:
-	# 	json.dump(data_dict, f,indent=4)
 	result = {"items": []}
 	myBooks = data_dict['response']['add_update_list']['meta_data']
 	
@@ -118,7 +134,10 @@ def getXML(myFile, downloaded):
 		myFilteredBooks = [i for i in myBooks if (MYINPUT in i['authorString'].casefold())]	
 	elif SEARCH_SCOPE == "Both":
 		myFilteredBooks = [i for i in myBooks if (MYINPUT in i['authorString'].casefold()) or (MYINPUT in i['title']['#text'].casefold())]
-		
+	
+
+	if GHOST_RESULTS == '0':
+		myFilteredBooks = [i for i in myFilteredBooks if (i['ASIN'] in downloaded)]
 	
 	if MYINPUT and not myFilteredBooks:
 		result["items"].append({
@@ -130,14 +149,15 @@ def getXML(myFile, downloaded):
 				}
 			
 				})
-		#print (json.dumps(result))
+		
 
 
-
-
+	
+	totalLibrary = (len(myFilteredBooks))
+	myCounter = 0
 
 	for book in myFilteredBooks:
-		#print (book['title']['#text'])
+		
 		
 		if book['ASIN'] in downloaded:
 			BookSymbol = BOOK_CONTENT_SYMBOL
@@ -160,10 +180,10 @@ def getXML(myFile, downloaded):
 			continue
 		
 		
-		
+		myCounter += 1
 		result["items"].append({
 			"title": book['title']['#text']+BookSymbol,
-			'subtitle': book['authorString'],
+			'subtitle': f"{myCounter}/{totalLibrary} {book['authorString']}",
 			'valid': True,
 			
 			"icon": {
@@ -171,8 +191,8 @@ def getXML(myFile, downloaded):
 			},
 			'arg': bookURL
 				}) 
-	log (len(data_dict['response']['add_update_list']['meta_data']))
-	log (len(myFilteredBooks))
+	
+	
 	
 	print (json.dumps(result))
 	
