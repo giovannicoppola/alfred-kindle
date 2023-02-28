@@ -5,17 +5,10 @@ import sys
 import json
 
 
-#WF_BUNDLE = os.getenv('alfred_workflow_bundleid')
-#WF_FOLDER = os.getenv('alfred_preferences')+ "/workflows/"+os.getenv('alfred_workflow_uid')
-# INDEX_DB = WF_FOLDER+"index.db"
-# TIMESTAMP = WF_FOLDER+'timestamp.txt'
-
 
 CACHE_FOLDER = os.getenv('alfred_workflow_cache')
 CACHE_FOLDER_IMAGES = CACHE_FOLDER+"/images/"
-#MY_DATABASE = CACHE_FOLDER+"/myKindle.db"
 MY_URL_STRING = "https://ecx.images-amazon.com/images/P/"
-#MY_URL_ROOT = "https://www.audible.com/"
 
 
 if not os.path.exists(CACHE_FOLDER):

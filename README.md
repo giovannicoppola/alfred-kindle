@@ -37,6 +37,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 - Alfred 5 with Powerpack license
 - Python3 (howto [here](https://www.freecodecamp.org/news/python-version-on-mac-update/))
 - Kindle app installed
+- Download `alfred-kindle` [latest release](https://github.com/giovannicoppola/alfred-kindle/releases/latest)
 
 
 
@@ -63,7 +64,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 
 - None for now, but I have not done extensive testing, let me know if you see anything!
 - tested with ~100 books. The book list is currently created on the fly, and book covers are downloaded if missing. Might be slower if your library has thousands of books, in which case a sqlite database it might be more efficient. Let me know if that is the case! 
-- tested with Python 3.9.13
+- not tested thoroughly for user-uploaded documents.
+
 
 
 <h1 id="acknowledgments">Acknowledgments 😀</h1>
