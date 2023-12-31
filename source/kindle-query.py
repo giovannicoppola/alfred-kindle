@@ -22,8 +22,7 @@ def getKindleDB():
 
 		
 		
-	queryString = f"""SELECT *
-		FROM Book """
+	queryString = f"""SELECT * FROM Book """
 		
 	
 	try:
