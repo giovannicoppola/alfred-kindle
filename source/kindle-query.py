@@ -6,86 +6,17 @@ import requests
 import os
 import sqlite3
 import json
-from config import KINDLE_DB, log, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING, SEARCH_SCOPE
+from config import  log, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING, SEARCH_SCOPE
 from time import time
 import xmltodict
 import urllib.request
 import sys
 
 MYINPUT = sys.argv[1].casefold()
-
-    
-
-def getKindleDB():
-	'''
-	not used 
-	'''
-	db = sqlite3.connect(KINDLE_DB)
-	cursor = db.cursor()
-
-		
-		
-	queryString = f"""SELECT * FROM Book """
-		
-	
-	try:
-		cursor.execute(queryString)
-		
-		
-		result = [row[1] for row in cursor.fetchall()]
-		
+   
 
 
-	except sqlite3.OperationalError as err:
-		result= {"items": [{
-		"title": "Error: " + str(err),
-		"subtitle": "Some error",
-		"arg": "",
-		"icon": {
 
-				"path": "icons/Warning.png"
-			}
-		}]}
-		print (json.dumps(result))
-		raise err
-
-	
-		
-
-	resultList = []
-	for i in range(0, len(result), 10):
-		resultList.append(','.join(str(x) for x in result[i:i+10]))
-
-	return resultList
-	
-
-
-def GetKindleData(myList):
-	"""
-	
-	A function to get kindle information using a third party API.
-	Currently not used in this workflow
-
-	"""
-	url = "https://amazon-product-price-data.p.rapidapi.com/product"
-
-	myResults = []
-	#querystring = {"asins":"B00JGAS65Q, B003EY7IQI, B004DEPH3E","locale":"US"}
-	for myBatch in myList: 
-		querystring = {"asins":myBatch,"locale":"US"}
-
-		headers = {
-			"X-RapidAPI-Key": "INSERT API KEY HERE",
-			"X-RapidAPI-Host": "amazon-product-price-data.p.rapidapi.com"
-		}
-
-		response = requests.request("GET", url, headers=headers, params=querystring)
-		myResults.append(response.json())
-	
-	with open('kindle.json', 'w') as f:
-		json.dump(myResults, f,indent=4)
-	
-	return (myResults)
 
 def getDownloadedBooks(basepath):
 	
@@ -209,7 +140,8 @@ def getXML(myFile, downloaded):
 
 def main():
 	main_start_time = time()
-	myContentBooks = getDownloadedBooks (KINDLE_CONTENT)
+	myContentBooks = getDownloadedBooks (KINDLE_CONTENT) # output is a list of downloaded book ASINs
+	log (myContentBooks)
 	getXML(XML_CACHE, myContentBooks)
 	
 	main_timeElapsed = time() - main_start_time

@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+# CONFIG file for the kindle-ibooks workflow
 
 import os
 import sys
-import json
+
 
 
 
@@ -23,25 +23,42 @@ def log(s, *args):
     print(s, file=sys.stderr)
 
 
+def defineKindleFolder ():
+    """
+    a function to find the kindle folder
+    it will look for the newer kindle app, then the classic one, so if both are present it will use the new one
+
+    """
 
 
-# checking the possible kindle folders
-pathA = os.path.expanduser('~')+'/Library/Application Support/Kindle/'
-pathB = os.path.expanduser('~')+'/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/'
+    # checking the possible kindle folders
+    pathA = os.path.expanduser('~')+'/Library/Containers/com.amazon.Lassen/Data/Library/ZZ'
+    pathB = os.path.expanduser('~')+'/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/'
+    pathC = os.path.expanduser('~')+'/Library/Application Support/Kindle/'
+    
 
-if (os.path.exists(pathA)):
-    kindle_path = pathA
-elif (os.path.exists(pathB)):
-    kindle_path = pathB
-else:
-    kindle_path = ''
+    if (os.path.exists(pathA)):
+        kindle_path = pathA
+        KINDLE_CONTENT = kindle_path+'Protected/book_asset.db'
+        XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
+        
+
+    elif (os.path.exists(pathB)):
+        kindle_path = pathB
+        XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
+        KINDLE_CONTENT = kindle_path+'/My Kindle Content/'
+
+    elif (os.path.exists(pathC)):
+        kindle_path = pathC
+        XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
+        KINDLE_CONTENT = kindle_path+'/My Kindle Content/'
+
+    else:
+        kindle_path = ''
+    return XML_CACHE, KINDLE_CONTENT
 
 
-
-
-KINDLE_DB = kindle_path+'My Kindle Content/book_asset.db'
-XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
-KINDLE_CONTENT = kindle_path+'/My Kindle Content/'
+XML_CACHE, KINDLE_CONTENT = defineKindleFolder()
 BOOK_CONTENT_SYMBOL = os.path.expanduser(os.getenv('BookContent'))
 GHOST_RESULTS = os.path.expanduser(os.getenv('SHOW_GHOST'))
 SEARCH_SCOPE = os.path.expanduser(os.getenv('SEARCH_SCOPE'))
