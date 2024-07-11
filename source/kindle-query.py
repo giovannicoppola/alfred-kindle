@@ -17,6 +17,9 @@ MYINPUT = sys.argv[1].casefold()
     
 
 def getKindleDB():
+	'''
+	not used 
+	'''
 	db = sqlite3.connect(KINDLE_DB)
 	cursor = db.cursor()
 
@@ -85,7 +88,7 @@ def GetKindleData(myList):
 	return (myResults)
 
 def getDownloadedBooks(basepath):
-	import os
+	
 	myContentBooks = []
 	
 	# List all subdirectories using scandir()
@@ -164,7 +167,10 @@ def getXML(myFile, downloaded):
 			ICON_PATH = f"{CACHE_FOLDER_IMAGES}{book['ASIN']}.01"
 			if not os.path.exists(ICON_PATH):
 				log ("retrieving image" + ICON_PATH)
-				urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
+				try:
+					urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
+				except urllib.error.URLError as e:
+					log("Error retrieving image:", e.reason)  # Log the specific error reason
 		
 			
 		elif GHOST_RESULTS == '1':
@@ -173,7 +179,10 @@ def getXML(myFile, downloaded):
 			ICON_PATH = f"{CACHE_FOLDER_IMAGES}{book['ASIN']}.01"
 			if not os.path.exists(ICON_PATH):
 				log ("retrieving image" + ICON_PATH)
-				urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
+				try:
+					urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
+				except urllib.error.URLError as e:
+					log("Error retrieving image:", e.reason)  # Log the specific error reason
 		
 		else:
 			continue
