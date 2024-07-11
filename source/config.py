@@ -32,33 +32,39 @@ def defineKindleFolder ():
 
 
     # checking the possible kindle folders
-    pathA = os.path.expanduser('~')+'/Library/Containers/com.amazon.Lassen/Data/Library/ZZ'
+    pathA = os.path.expanduser('~')+'/Library/Containers/com.amazon.Lassen/Data/Library/'
     pathB = os.path.expanduser('~')+'/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/'
     pathC = os.path.expanduser('~')+'/Library/Application Support/Kindle/'
     
 
     if (os.path.exists(pathA)):
         kindle_path = pathA
-        KINDLE_CONTENT = kindle_path+'Protected/book_asset.db'
+        KINDLE_CONTENT = kindle_path+'Protected/BookData.sqlite'
         XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
+        log ("using new Kindle app")
+        KINDLE_APP = 'new'
         
 
     elif (os.path.exists(pathB)):
         kindle_path = pathB
         XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
         KINDLE_CONTENT = kindle_path+'/My Kindle Content/'
+        log ("using Kindle Classic app")
+        KINDLE_APP = 'classic'
 
     elif (os.path.exists(pathC)):
         kindle_path = pathC
         XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
         KINDLE_CONTENT = kindle_path+'/My Kindle Content/'
+        log ("using Kindle Classic app")
+        KINDLE_APP = 'classic'
 
     else:
         kindle_path = ''
-    return XML_CACHE, KINDLE_CONTENT
+    return XML_CACHE, KINDLE_CONTENT, KINDLE_APP
 
 
-XML_CACHE, KINDLE_CONTENT = defineKindleFolder()
+XML_CACHE, KINDLE_CONTENT, KINDLE_APP = defineKindleFolder()
 BOOK_CONTENT_SYMBOL = os.path.expanduser(os.getenv('BookContent'))
 GHOST_RESULTS = os.path.expanduser(os.getenv('SHOW_GHOST'))
 SEARCH_SCOPE = os.path.expanduser(os.getenv('SEARCH_SCOPE'))

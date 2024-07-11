@@ -6,14 +6,18 @@ import requests
 import os
 import sqlite3
 import json
-from config import  log, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING, SEARCH_SCOPE
+from config import  log, KINDLE_APP, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING, SEARCH_SCOPE
 from time import time
 import xmltodict
 import urllib.request
 import sys
 
 MYINPUT = sys.argv[1].casefold()
-   
+
+
+#initializing JSON output
+result = {"items": [], "variables":{}}
+
 
 
 
@@ -135,15 +139,122 @@ def getXML(myFile, downloaded):
 	
 	print (json.dumps(result))
 	
+
+
+def fetchKindle(mySQL):
+    
+
+    db = sqlite3.connect(KINDLE_CONTENT)
+    db.row_factory = sqlite3.Row
+    
+    rs = db.execute(mySQL).fetchall()
+    totCount = len(rs)
+    
+    myCounter = 0
+    
+    for r in rs:
+        myCounter += 1
+        # if r['Message_ReadFlag'] == 0:
+        #     readIcon = '⭐'
+        # else:
+        #     readIcon = ''
+
+        result["items"].append({
+            "title": f"{r['ZDISPLAYTITLE']}",
+            
+            'subtitle': f"{myCounter}/{totCount:,} {r['ZBOOKID']}",
+            'valid': True,
+            "quicklookurl": '',
+            'variables': {
+                    
+            },
+                # "mods": {
+
+                # "control": {
+                #     "valid": 'true',
+                #     "subtitle": f"🧵 filter entire thread",
+                #     "arg": r['Message_ThreadTopic'],
+                #     'variables': {
+                #         "mySource": 'thread',
+                #         "threadTopic": r['Message_ThreadTopic']
+                #     }
+                # }
+                # },
+            "icon": {
+                "path": f""
+            },
+            'arg': "myarg"
+                }) 
+        
+    if not rs:
+        result["items"].append({
+            "title": "No matches in your library",
+            "subtitle": "Try a different query",
+            "arg": "",
+            "icon": {
+                "path": "icons/Warning.png"
+                }
+            
+                })
+    #result['variables'] = {"mySource": "mailList"}                   
+    print (json.dumps(result))
+
+def readHomeFeed():
+	"""
+	a function to read a json file, turn it into a dictionary and save it as a 'pretty' json file
+	
+	"""
+	
+	with open('/Users/giovanni.coppola/Library/Containers/com.amazon.Lassen/Data/Library/Caches/homefeed.json') as json_file:
+		data = json.load(json_file)
+		json_file.close()
+	
+	# save as a file
+	with open('homefeed_pretty.json', 'w') as json_file:
+		json.dump(data, json_file, indent=4, sort_keys=True)
+		json_file.close()
+
+
+
+def search_string_in_db(db_path, search_string):
+	mySQL = "SELECT (ZDISPLAYAUTHOR) FROM ZBOOK"
+	db = sqlite3.connect(db_path)
+	db.row_factory = sqlite3.Row
+	rs = db.execute(mySQL).fetchall()
+	totCount = len(rs)
+	log (totCount)
+	# log the text version of ZALTERNATESORTAUTHOR
+	myblob = rs[0]
+	# Assuming the blob is encoded in UTF-8, attempt to decode it
+	try:
+		text_data = myblob.decode('utf-8')
+		print(text_data)
+	except UnicodeDecodeError:
+		print("Could not decode the blob as UTF-8 text.")
+    
+
     
     
 
+
+
+
 def main():
 	main_start_time = time()
-	myContentBooks = getDownloadedBooks (KINDLE_CONTENT) # output is a list of downloaded book ASINs
-	log (myContentBooks)
-	getXML(XML_CACHE, myContentBooks)
-	
+	#readHomeFeed()
+
+	if KINDLE_APP == "classic":
+		
+		myContentBooks = getDownloadedBooks (KINDLE_CONTENT) # output is a list of downloaded book ASINs
+		log (myContentBooks)
+		getXML(XML_CACHE, myContentBooks)
+	elif KINDLE_APP == "new":
+		
+		mySQL = f"SELECT * FROM ZBOOK WHERE ZDISPLAYTITLE LIKE '%{MYINPUT}%'"
+		#log (mySQL)
+		#fetchKindle(mySQL)
+		search_string_in_db(KINDLE_CONTENT, "Bauer")
+		
 	main_timeElapsed = time() - main_start_time
 	log(f"\nscript duration: {round (main_timeElapsed,3)} seconds")
     
