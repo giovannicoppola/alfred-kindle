@@ -1,6 +1,9 @@
 import sqlite3
 import binascii
 import base64
+import sys
+
+
 
 def searchBLOB():
     # Connect to the SQLite database
@@ -101,13 +104,75 @@ def try_decoding(blob_data):
 
 
 import biplist
-def useBiplist():
+def get_allBLOBs():
     # Connect to your SQLite database
-    conn = sqlite3.connect('/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite')
+    myDatabase = '/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
+    myDatabase = '/Users/giovanni.coppola/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
+    conn = sqlite3.connect(myDatabase)
+    
+
+
+    BLOBfields =['ZDISPLAYAUTHOR','ZSORTAUTHOR','ZSYNCMETADATAATTRIBUTES','ZALTERNATESORTAUTHOR','ZEXTENDEDMETADATA','ZORIGINS','ZRAWTITLEDETAILSJSON']
+
 
     # Replace 'your_table' with your actual table name, 'your_blob_column' with your BLOB column name, and 'your_rowid' with the specific row ID
-    rowid = 171  # Example rowid
+    rowid = 113  # Example rowid
     cursor = conn.cursor()
+    
+    
+        
+    # The 'with' statement ensures the file is properly closed after its suite finishes
+    for myBLOB in BLOBfields:
+        cursor.execute(f"SELECT {myBLOB} FROM ZBOOK WHERE rowid = ?", (rowid,))
+        result = cursor.fetchone()
+
+        if result:
+            blob_data = result[0]  # Assuming BLOB is the first column in the result tuple
+            
+            # Attempt to decode the BLOB data using biplist
+            try:
+                plist_data = biplist.readPlistFromString(blob_data)
+                # Process the plist_data here (e.g., print, manipulate, etc.)
+                #print(plist_data)
+                #print(plist_data['$objects'][23])
+                 # Open the file in append mode ('a')
+                with open('blobs.txt', 'a') as file:
+                    # Append the text to the file
+                    file.write(f"current BLOB: {myBLOB}\n")
+                    file.write(f"{str(plist_data)}\n---------------------------\n\n\n")
+                # write the plistdata dictionary as JSON to a file, with pretty formatting
+                
+
+
+                
+                    
+                # Close the file
+                file.close()
+            except (biplist.InvalidPlistException, biplist.NotBinaryPlistException):
+                print("Failed to decode BLOB data as a plist.")
+       
+
+
+            
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+
+
+def getBLOB(rowid):
+    # Connect to your SQLite database
+    myDatabase = '/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
+    myDatabase = '/Users/giovanni.coppola/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
+    conn = sqlite3.connect(myDatabase)
+    
+   
+    
+    cursor = conn.cursor()
+    
+    
+        
+    # The 'with' statement ensures the file is properly closed after its suite finishes
+   
     cursor.execute(f"SELECT ZSYNCMETADATAATTRIBUTES FROM ZBOOK WHERE rowid = ?", (rowid,))
     result = cursor.fetchone()
 
@@ -117,24 +182,24 @@ def useBiplist():
         # Attempt to decode the BLOB data using biplist
         try:
             plist_data = biplist.readPlistFromString(blob_data)
-            # Process the plist_data here (e.g., print, manipulate, etc.)
-            #print(plist_data)
-            print(plist_data['$objects'][23])
+            
         except (biplist.InvalidPlistException, biplist.NotBinaryPlistException):
             print("Failed to decode BLOB data as a plist.")
-        
+    
+
+
+            
     # Close the cursor and connection
     cursor.close()
     conn.close()
-
-
-
+    return plist_data
 
 # Example usage
 db_path = '/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
 table = 'ZBOOK'
 blob_column = 'ZSYNCMETADATAATTRIBUTES'
-rowid = 171
+rowid = sys.argv[1]  # Example rowid
+ListElement = int(sys.argv[2])  # Example rowid
 
 # blob_data = extract_blob_data(db_path, table, blob_column, rowid)
 
@@ -144,7 +209,19 @@ rowid = 171
 #     print("No blob data found.")
 
 
-useBiplist()
+myBLOB = getBLOB(rowid)
+print (myBLOB['$objects'][ListElement])
+print (f"attributes:{myBLOB['$objects'][1]['attributes']}")
+print (f"value:{myBLOB['$objects'][2]['NS.keys'][2]}")
+print (f"author index:{myBLOB['$objects'].index('author')}")
+
+       
+# with open('blobs2.json', 'w') as file:
+#     # Append the text to the file
+#     file.write(str(myBLOB))
+#     file.close()
+
+
 
 
 # ['$null', {'attributes': Uid(2), '$class': Uid(45)}, 

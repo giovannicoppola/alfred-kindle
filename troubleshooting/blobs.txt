@@ -1,0 +1,10 @@
+current BLOB: ZSYNCMETADATAATTRIBUTES
+{'$version': 100000, '$archiver': 'NSKeyedArchiver', '$top': {'root': Uid(1)}, '$objects': ['$null', {'attributes': Uid(2), '$class': Uid(46)}, {'NS.keys': [Uid(3), Uid(4), Uid(5), Uid(6), Uid(7), Uid(8), Uid(9), Uid(10), Uid(11), Uid(12), Uid(13), Uid(14)], 'NS.objects': [Uid(15), Uid(16), Uid(20), Uid(21), Uid(27), Uid(28), Uid(35), Uid(36), Uid(37), Uid(38), Uid(44), Uid(45)], '$class': Uid(19)}, 'ASIN', 'publishers', 'content_type', 'authors', 'cde_contenttype', 'origins', 'title', 'purchase_date', 'publication_date', 'bisac_subject_description_code', 'content_size', 'textbook_type', 'B002SAUBWM', {'NS.keys': [Uid(17)], 'NS.objects': [Uid(18)], '$class': Uid(19)}, 'publisher', 'Oxford University Press', {'$classname': 'NSMutableDictionary', '$classes': ['NSMutableDictionary', 'NSDictionary', 'NSObject']}, 'application/x-mobipocket-ebook', {'NS.keys': [Uid(22)], 'NS.objects': [Uid(23)], '$class': Uid(19)}, 'author', {'NS.objects': [Uid(24), Uid(25)], '$class': Uid(26)}, 'Burrows, Edwin G.', 'Wallace, Mike', {'$classname': 'NSMutableArray', '$classes': ['NSMutableArray', 'NSArray', 'NSObject']}, 'EBOK', {'NS.keys': [Uid(29)], 'NS.objects': [Uid(30)], '$class': Uid(19)}, 'origin', {'NS.keys': [Uid(31), Uid(32)], 'NS.objects': [Uid(33), Uid(34)], '$class': Uid(19)}, 'type', 'id', 'Purchase', 'D01-6833461-0726621', 'Gotham: A History of New York City to 1898 (The History of NYC Series)', '2022-11-06T17:05:49+0000', '1998-11-19T00:00:00+0000', {'NS.keys': [Uid(39)], 'NS.objects': [Uid(40)], '$class': Uid(19)}, 'code', {'NS.objects': [Uid(41), Uid(42), Uid(43)], '$class': Uid(26)}, 'HIS000000', 'HIS036000', 'HIS036010', '15226880', 'trade', {'$classname': 'SyncMetadataAttributes', '$classes': ['SyncMetadataAttributes', 'NSObject']}]}
+---------------------------
+
+
+current BLOB: ZORIGINS
+{'$version': 100000, '$archiver': 'NSKeyedArchiver', '$top': {'root': Uid(1)}, '$objects': ['$null', {'NS.objects': [Uid(2)], '$class': Uid(3)}, 'Purchase', {'$classname': 'NSMutableArray', '$classes': ['NSMutableArray', 'NSArray', 'NSObject']}]}
+---------------------------
+
+
