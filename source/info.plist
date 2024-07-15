@@ -100,6 +100,30 @@ export PYTHONPATH="$PWD/lib"
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query=$1
+open "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>5</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>C201E860-5900-49B2-8980-4B8E5DA0A4C8</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>action</key>
 				<integer>0</integer>
 				<key>argument</key>
@@ -131,26 +155,53 @@ export PYTHONPATH="$PWD/lib"
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
+				<key>alfredfiltersresults</key>
 				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
 				<key>escaping</key>
 				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:refreshkeyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>⏳...please wait while I refresh...</string>
 				<key>script</key>
-				<string>query=$1
-open "$1"</string>
+				<string>export PYTHONPATH="$PWD/lib"
+/usr/bin/python3 library-rebuild.py
+</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>refresh library database 👀</string>
 				<key>type</key>
 				<integer>5</integer>
+				<key>withspace</key>
+				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>C201E860-5900-49B2-8980-4B8E5DA0A4C8</string>
+			<string>C4CF391F-F6A5-48BE-B5D0-B018D1393DA7</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -223,6 +274,13 @@ Feedback welcome! If you notice a bug, or have ideas for new features, please fe
 			<real>685</real>
 			<key>ypos</key>
 			<real>340</real>
+		</dict>
+		<key>C4CF391F-F6A5-48BE-B5D0-B018D1393DA7</key>
+		<dict>
+			<key>xpos</key>
+			<real>470</real>
+			<key>ypos</key>
+			<real>570</real>
 		</dict>
 		<key>EFFEB21A-8303-4FE0-8B9D-0302BE4E21EA</key>
 		<dict>
@@ -325,9 +383,79 @@ Feedback welcome! If you notice a bug, or have ideas for new features, please fe
 			<key>variable</key>
 			<string>SEARCH_SCOPE</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>Kindle</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Kindle</string>
+						<string>Kindle</string>
+					</array>
+					<array>
+						<string>Apple Books</string>
+						<string>iBooks</string>
+					</array>
+					<array>
+						<string>Both</string>
+						<string>Both</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Search across Kindle, Apple Books, or both.</string>
+			<key>label</key>
+			<string>Target library</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>TARGET_LIBRARY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>::books-refresh</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Refresh book library databases</string>
+			<key>label</key>
+			<string>Force refresh keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>refreshkeyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>30</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>in days</string>
+			<key>label</key>
+			<string>Refresh rate</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>RefreshRate</string>
+		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>0.1.1</string>
 	<key>webaddress</key>

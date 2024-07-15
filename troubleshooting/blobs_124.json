@@ -1,3 +1,6 @@
+BLOB example for a purchased book, multiple authors
+Gotham: A History of New York City to 1898 (The History of NYC Series)
+
 {
     "$version": 100000,
     "$archiver": "NSKeyedArchiver",

@@ -2,6 +2,7 @@ import sqlite3
 import binascii
 import base64
 import sys
+import json
 
 
 
@@ -159,10 +160,27 @@ def get_allBLOBs():
     conn.close()
 
 
-def getBLOB(rowid):
+
+def readHomeFeed():
+	"""
+	a function to read a json file, turn it into a dictionary and save it as a 'pretty' json file
+	
+	"""
+
+	with open('/Users/giovanni.coppola/Library/Containers/com.amazon.Lassen/Data/Library/Caches/homefeed.json') as json_file:
+		data = json.load(json_file)
+		json_file.close()
+
+	# save as a file
+	with open('homefeed_pretty.json', 'w') as json_file:
+		json.dump(data, json_file, indent=4, sort_keys=True)
+		json_file.close()
+
+
+def getBLOB(rowid, saveFile = False):
     # Connect to your SQLite database
     myDatabase = '/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
-    myDatabase = '/Users/giovanni.coppola/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
+    #myDatabase = '/Users/giovanni.coppola/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
     conn = sqlite3.connect(myDatabase)
     
    
@@ -192,7 +210,28 @@ def getBLOB(rowid):
     # Close the cursor and connection
     cursor.close()
     conn.close()
+
+    if saveFile:
+        
+        # write the plistdata dictionary as JSON to a file, with pretty formatting
+        with open(f'blobs_{rowid}.json', 'w') as file:
+            
+        # Append the text to the file
+            file.write(str(plist_data))
+            file.close()
+
+            
     return plist_data
+
+
+def figureoutField (rowid,ListElement,myField):
+    myBLOB = getBLOB(rowid)
+    print (myBLOB['$objects'][ListElement])
+    print (f"attributes:{myBLOB['$objects'][1]['attributes']}")
+    print (f"value:{myBLOB['$objects'][2]['NS.keys'][2]}")
+    print (f"myField index:{myBLOB['$objects'].index(myField)}")
+    return myBLOB['$objects'][ListElement]
+
 
 # Example usage
 db_path = '/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
@@ -200,6 +239,7 @@ table = 'ZBOOK'
 blob_column = 'ZSYNCMETADATAATTRIBUTES'
 rowid = sys.argv[1]  # Example rowid
 ListElement = int(sys.argv[2])  # Example rowid
+#figureoutField(rowid,ListElement,'author')
 
 # blob_data = extract_blob_data(db_path, table, blob_column, rowid)
 
@@ -208,13 +248,10 @@ ListElement = int(sys.argv[2])  # Example rowid
 # else:
 #     print("No blob data found.")
 
+#myBLOB = getBLOB(rowid, False)
+#print (myBLOB['$objects'][ListElement])
 
-myBLOB = getBLOB(rowid)
-print (myBLOB['$objects'][ListElement])
-print (f"attributes:{myBLOB['$objects'][1]['attributes']}")
-print (f"value:{myBLOB['$objects'][2]['NS.keys'][2]}")
-print (f"author index:{myBLOB['$objects'].index('author')}")
-
+figureoutField(rowid,ListElement,'PublicLibraryLending')
        
 # with open('blobs2.json', 'w') as file:
 #     # Append the text to the file

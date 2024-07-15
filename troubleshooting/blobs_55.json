@@ -1,3 +1,5 @@
+BLOB example for a borrowed book
+Titan: The Life of John D. Rockefeller, Sr.
 {
     "$version": 100000,
     "$archiver": "NSKeyedArchiver",
@@ -33,8 +35,8 @@
                 "Uid(29)",
                 "Uid(32)",
                 "Uid(33)",
-                "Uid(34)",
-                "Uid(41)",
+                "Uid(34)",  element 11, origins
+                "Uid(41)", element 12, purchase date
                 "Uid(42)"
             ],
             "$class": "Uid(19)"
@@ -47,7 +49,7 @@
         "publishers",
         "title", # element 09
         "cde_contenttype",
-        "origins",
+        "origins", # element 11
         "purchase_date",
         "publication_date",
         "application/x-mobipocket-ebook",
@@ -117,7 +119,7 @@
         "Vintage",
         "Titan: The Life of John D. Rockefeller, Sr.",
         "EBOK",
-        {
+        {   # element 34 (origins)
             "NS.keys": [
                 "Uid(35)"
             ],
@@ -138,10 +140,10 @@
             ],
             "$class": "Uid(19)"
         },
-        "type",
-        "id",
-        "PublicLibraryLending",
-        "A2YKO56D6DCI2V",
+        "type", # element 37
+        "id", # element 38
+        "PublicLibraryLending", #element 39 (type)
+        "A2YKO56D6DCI2V", #element 40 (id)
         "2023-04-02T10:38:29+0000",
         "2007-12-18T00:00:00+0000",
         {
