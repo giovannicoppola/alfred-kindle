@@ -248,7 +248,7 @@ ListElement = int(sys.argv[2])  # Example rowid
 # else:
 #     print("No blob data found.")
 
-#myBLOB = getBLOB(rowid, False)
+myBLOB = getBLOB(rowid, True)
 #print (myBLOB['$objects'][ListElement])
 
 figureoutField(rowid,ListElement,'PublicLibraryLending')
