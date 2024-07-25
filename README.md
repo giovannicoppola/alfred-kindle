@@ -61,7 +61,12 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 
 
 <h1 id="known-issues">Limitations & known issues ⚠️</h1>
+- I could not figure out how to open a specific book in the Kindle app programmatically. If you know how to do that, let me know!
+- I could not figure out how the Kindle app can tell if a book was first loaned, then purchased. Currently, if that is the case (i.e. a book was first loaned, then purchased), the book will appear as loaned, [unless it is not downloaded??]
 
+
+
+## old ones
 - None for now, but I have not done extensive testing, let me know if you see anything!
 - tested with ~100 books. The book list is currently created on the fly, and book covers are downloaded if missing. Might be slower if your library has thousands of books, in which case a sqlite database it might be more efficient. Let me know if that is the case! 
 - not tested thoroughly for user-uploaded documents.
