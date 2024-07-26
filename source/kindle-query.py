@@ -143,63 +143,6 @@ def getXML(myFile, downloaded):
 
 
 
-def fetchKindle(mySQL):
-
-
-	db = sqlite3.connect(KINDLE_CONTENT)
-	db.row_factory = sqlite3.Row
-
-	rs = db.execute(mySQL).fetchall()
-	totCount = len(rs)
-
-	myCounter = 0
-
-	for r in rs:
-		myCounter += 1
-		# if r['Message_ReadFlag'] == 0:
-		#     readIcon = '⭐'
-		# else:
-		#     readIcon = ''
-
-		result["items"].append({
-			"title": f"{r['ZDISPLAYTITLE']}",
-
-			'subtitle': f"{myCounter}/{totCount:,} {r['ZBOOKID']}",
-			'valid': True,
-			"quicklookurl": '',
-			'variables': {
-
-			},
-				# "mods": {
-
-				# "control": {
-				#     "valid": 'true',
-				#     "subtitle": f"🧵 filter entire thread",
-				#     "arg": r['Message_ThreadTopic'],
-				#     'variables': {
-				#         "mySource": 'thread',
-				#         "threadTopic": r['Message_ThreadTopic']
-				#     }
-				# }
-				# },
-			"icon": {
-				"path": f""
-			},
-			'arg': "myarg"
-				}) 
-
-	if not rs:
-		result["items"].append({
-			"title": "No matches in your library",
-			"subtitle": "Try a different query",
-			"arg": "",
-			"icon": {
-				"path": "icons/Warning.png"
-				}
-
-				})
-	#result['variables'] = {"mySource": "mailList"}                   
-	print (json.dumps(result))
 
 
 
@@ -297,7 +240,7 @@ def main():
 		mySQL = f"SELECT * FROM ZBOOK WHERE ZDISPLAYTITLE LIKE '%{MYINPUT}%'"
 		mySQL = f"SELECT * FROM ZBOOK WHERE ZSYNCMETADATAATTRIBUTES LIKE '%{MYINPUT}%'"
 		#log(mySQL)
-		#fetchKindle(mySQL)
+		
 		db_path = '/Users/giovanni/Library/Containers/com.amazon.Lassen/Data/Library/Protected/BookData.sqlite'
 		table = 'ZBOOK'
 		column = 'ZSYNCMETADATAATTRIBUTES'
@@ -307,9 +250,7 @@ def main():
 		
 		#result = search_blob_in_db_biplist(db_path, table, column, search_string)
 
-		# Save the list of books to a file
-		#with open('kindle_books.pkl', 'wb') as file:
-		#	pickle.dump(result, file)
+		
 
 		# Load the list of books from the file
 		# with open('kindle_books.pkl', 'rb') as file:
@@ -326,7 +267,7 @@ def main():
 		# serveiBooks(books, result)
 
 		# print (json.dumps(result))
-		buildKindleNew()
+		buildKindleNew(KINDLE_CONTENT)
 
 
 

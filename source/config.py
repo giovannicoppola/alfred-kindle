@@ -7,6 +7,7 @@ import sys
 
 
 CACHE_FOLDER = os.getenv('alfred_workflow_cache')
+DATA_FOLDER = os.getenv('alfred_workflow_data')
 CACHE_FOLDER_IMAGES = CACHE_FOLDER+"/images/"
 MY_URL_STRING = "https://ecx.images-amazon.com/images/P/"
 RefRate = int(os.getenv('RefreshRate'))
@@ -15,7 +16,8 @@ if not os.path.exists(CACHE_FOLDER):
     os.makedirs(CACHE_FOLDER)
 if not os.path.exists(CACHE_FOLDER_IMAGES):
     os.makedirs(CACHE_FOLDER_IMAGES)
-
+if not os.path.exists(DATA_FOLDER):
+    os.makedirs(DATA_FOLDER)
 
 def log(s, *args):
     if args:

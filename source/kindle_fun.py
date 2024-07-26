@@ -1,10 +1,11 @@
 ## support functions for the alfred-kindle-ibook workflow
 
 from datetime import datetime, date
-from config import log, RefRate, CACHE_DATABASE_FILE, KINDLE_APP, GHOST_RESULTS, Book, KINDLE_CONTENT
+from config import log, RefRate, CACHE_DATABASE_FILE, KINDLE_APP, GHOST_RESULTS, Book, KINDLE_CONTENT, DATA_FOLDER
 import os
 import sqlite3
 import biplist
+import pickle
 
 
 def search_blob_in_db_biplist(db_path, table, column, search_string):
@@ -123,25 +124,15 @@ def checkMatch (search_string, authorName, title):
 
 
 
-def buildKindleNew():
+def buildKindleNew(myDatabase):
 	"""
     a function to build the kindle database for the new kindle app
 		
-    
-    book = Book(
-			title=row['ZDISPLAYTITLE'],
-			path=row['ZPATH'],
-			author=row['ZAUTHOR'],
-			book_desc=row['ZBOOKDESCRIPTION'],
-			read_pct=row['ZREADINGPROGRESS'],
-			
-			)
-	books.append(book)
-	
+   
     """
     
 	# Connect to the SQLite database
-	conn = sqlite3.connect(KINDLE_CONTENT)
+	conn = sqlite3.connect(myDatabase)
 	conn.row_factory = sqlite3.Row
 	cursor = conn.cursor()
 
@@ -187,11 +178,24 @@ def buildKindleNew():
 			except (biplist.InvalidPlistException, biplist.NotBinaryPlistException):
 				log("Failed to decode BLOB data as a plist.")
 				authorName = ''
+			 
+		book = Book(
+				title=title,
+				path=zpath,
+				author=authorName,
+				book_desc="",
+				read_pct="",
+				
+				)
+		books.append(book)
+		
 
             
 	
 	conn.close()
-	
+	# pickle the books object
+	with open(f'{DATA_FOLDER}/kindle_books.pkl', 'wb') as file:
+		pickle.dump(books, file)
 	log ("building kindle database")
 	log ("done 👍")
 	return books
