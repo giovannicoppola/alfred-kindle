@@ -61,7 +61,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 
 
 <h1 id="known-issues">Limitations & known issues ⚠️</h1>
-- I could not figure out how to open a specific book in the Kindle app programmatically. If you know how to do that, let me know!
+- I could not figure out how to open a specific book in the Kindle app via command line. If you know how to do that, let me know!
 - I could not figure out how the Kindle app can tell if a book was first loaned, then purchased. Currently, if that is the case (i.e. a book was first loaned, then purchased), the book will appear as loaned, [unless it is not downloaded??]
 
 

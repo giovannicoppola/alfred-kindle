@@ -1,4 +1,4 @@
-# CONFIG file for the kindle-ibooks workflow
+# CONFIG file for the kindle-eBooks workflow
 
 import os
 import sys
@@ -8,16 +8,28 @@ import sys
 
 CACHE_FOLDER = os.getenv('alfred_workflow_cache')
 DATA_FOLDER = os.getenv('alfred_workflow_data')
-CACHE_FOLDER_IMAGES = CACHE_FOLDER+"/images/"
+CACHE_FOLDER_IMAGES_KINDLE = CACHE_FOLDER+"/images/kindle/"
+CACHE_FOLDER_IMAGES_IBOOKS = CACHE_FOLDER+"/images/ibooks/"
+TIMESTAMP_KINDLE = CACHE_FOLDER+"/timestamp_kindle.txt"
+TIMESTAMP_IBOOKS = CACHE_FOLDER+"/timestamp_ibooks.txt"
+
+
+
 MY_URL_STRING = "https://ecx.images-amazon.com/images/P/"
-RefRate = int(os.getenv('RefreshRate'))
+
 
 if not os.path.exists(CACHE_FOLDER):
     os.makedirs(CACHE_FOLDER)
-if not os.path.exists(CACHE_FOLDER_IMAGES):
-    os.makedirs(CACHE_FOLDER_IMAGES)
+if not os.path.exists(CACHE_FOLDER_IMAGES_KINDLE):
+    os.makedirs(CACHE_FOLDER_IMAGES_KINDLE)
+if not os.path.exists(CACHE_FOLDER_IMAGES_IBOOKS):
+    os.makedirs(CACHE_FOLDER_IMAGES_IBOOKS)
+
 if not os.path.exists(DATA_FOLDER):
     os.makedirs(DATA_FOLDER)
+
+KINDLE_PICKLE = f"{DATA_FOLDER}/kindle_books.pkl"
+IBOOKS_PICKLE = f"{DATA_FOLDER}/ibooks_books.pkl"
 
 def log(s, *args):
     if args:
@@ -45,6 +57,7 @@ def defineKindleFolder ():
         XML_CACHE = kindle_path+'/Cache/KindleSyncMetadataCache.xml'
         log ("using new Kindle app")
         KINDLE_APP = 'new'
+        KINDLE_APP_PATH = "/Applications/Amazon Kindle.app"
         
 
     elif (os.path.exists(pathB)):
@@ -84,22 +97,34 @@ class Book:
 
     books = 0
 
-    def __init__(self, title, path, author, book_desc, 
-                 read_pct):
+    def __init__(self, title, bookID, path, icon_path, author, book_desc, 
+                 read_pct, source, loaned,downloaded):
         self.title = title
+        self.bookID = bookID
         self.path = path
+        self.icon_path = icon_path
         self.author = author
         self.book_desc = book_desc if book_desc \
             else "No book description for this title available in Books"
-        self.read_pct = '0%' if not read_pct else str(read_pct * 100)[:4] + '%'
+        self.read_pct = '0%' if not read_pct else f"{(read_pct * 100):.1f}%"
+        self.source = source
+        self.loaned = loaned
+        self.downloaded = downloaded
         Book.books += 1
 
     def display_book(self):
         return {
             'title:': self.title,
+            'bookID:': self.bookID,
             'path:': self.path,
+            'icon_path:': self.icon_path,
             'author:': self.author,
-            'book_desc:': self.book_desc
+            'read_pct:': self.read_pct,
+            'book_desc:': self.book_desc,
+            'source:': self.source,
+            'loaned:': self.loaned,
+            'downloaded:': self.downloaded
+            
             
         }
 
@@ -108,27 +133,18 @@ class Book:
 
 
 
-XML_CACHE, KINDLE_CONTENT, KINDLE_APP = defineKindleFolder()
+
 BOOK_CONTENT_SYMBOL = os.path.expanduser(os.getenv('BookContent'))
+GHOST_SYMBOL = os.path.expanduser(os.getenv('GhostContent'))
 GHOST_RESULTS = os.path.expanduser(os.getenv('SHOW_GHOST'))
 SEARCH_SCOPE = os.path.expanduser(os.getenv('SEARCH_SCOPE'))
 TARGET_LIBRARY = os.path.expanduser(os.getenv('TARGET_LIBRARY'))
 
-if TARGET_LIBRARY == 'Both':
-    CACHE_DATABASE_FILE = CACHE_FOLDER+'/both.pkl'
-elif TARGET_LIBRARY == 'Kindle':
-    CACHE_DATABASE_FILE = CACHE_FOLDER+'/kindle.pkl'
-elif TARGET_LIBRARY == 'iBooks':
-    CACHE_DATABASE_FILE = CACHE_FOLDER+'/ibooks.pkl'
 
-if GHOST_RESULTS == '0':
-    CACHE_DATABASE_FILE = CACHE_DATABASE_FILE.replace('.pkl', '_noghost.pkl')
-
-
-
-
-
-
+if TARGET_LIBRARY in ["Kindle", "Both"]:
+    XML_CACHE, KINDLE_PATH, KINDLE_APP = defineKindleFolder()
+else:
+    XML_CACHE, KINDLE_PATH, KINDLE_APP = '', '', ''
 
 
 
