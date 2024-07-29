@@ -230,7 +230,7 @@ def get_kindle(myDatabase):
 	cursor = conn.cursor()
 
 	# Select the rows with BLOB data
-	query = f"SELECT rowid, ZSYNCMETADATAATTRIBUTES, ZDISPLAYTITLE, ZRAWCURRENTPOSITION, ZRAWMAXPOSITION,ZRAWBOOKSTATE, ZBOOKID FROM ZBOOK WHERE ZRAWBOOKTYPE IN (10, 13)"
+	query = f"SELECT rowid, ZSYNCMETADATAATTRIBUTES, ZDISPLAYTITLE, ZRAWCURRENTPOSITION, ZRAWMAXPOSITION,ZRAWBOOKSTATE, ZBOOKID, ZRAWREADSTATE FROM ZBOOK WHERE ZRAWBOOKTYPE IN (10, 13)"
 
 	cursor.execute(query)
 
@@ -239,7 +239,7 @@ def get_kindle(myDatabase):
 	loanCount = 0
 	for row in cursor.fetchall():
 		
-		rowid, blob_data, title, currPos, maxPos, downStatus, asinRaw = row
+		rowid, blob_data, title, currPos, maxPos, downStatus, asinRaw, isRead = row
 		
         # Skip if blob_data is None
 		if blob_data is None:
@@ -270,12 +270,15 @@ def get_kindle(myDatabase):
 				log("Failed to decode BLOB data as a plist.")
 				authorName = ''
 			
-			try:
-				percentRead = currPos/maxPos
+			if isRead == 1:
+				percentRead = 1.0
+			else:
+				try:
+					percentRead = currPos/maxPos
 
-			except:
-				percentRead = 0.0
-			
+				except:
+					percentRead = 0.0
+				
 			# downloading the cover
 			ASIN = asinRaw[2:-2]
 			ICON_PATH = f"{CACHE_FOLDER_IMAGES_KINDLE}{ASIN}.01"

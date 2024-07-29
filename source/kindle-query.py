@@ -40,6 +40,10 @@ def search_books(books, search_string):
 		search_string = search_string.replace('--ib', '')
 		books = [book for book in books if book.source == 'iBooks']
 	
+	if '--read' in search_string:
+		search_string = search_string.replace('--read', '')
+		books = [book for book in books if book.read_pct == '100.0%']
+	
 
 	if GHOST_RESULTS == '0':
 		books = [book for book in books if book.loaned == 0]
@@ -82,7 +86,10 @@ def serveBooks(books, result):
 		if loanedString == GHOST_SYMBOL and downloadedString == BOOK_CONTENT_SYMBOL:
 			loanedString = ""
 		booksN = len(books)
-		if myBook.read_pct != "0%":
+		
+		if myBook.read_pct == "100.0%":
+			readPct = "✅️"
+		elif myBook.read_pct != "0%":
 			readPct = myBook.read_pct
 		else:
 			readPct = ""
