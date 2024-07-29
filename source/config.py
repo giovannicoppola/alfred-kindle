@@ -2,7 +2,7 @@
 
 import os
 import sys
-
+import shutil
 
 
 
@@ -18,10 +18,35 @@ TIMESTAMP_IBOOKS = CACHE_FOLDER+"/timestamp_ibooks.txt"
 MY_URL_STRING = "https://ecx.images-amazon.com/images/P/"
 
 
+
+
+
+def move_images_to_newFolder(parent_folder, newFolder):
+    """
+    Compatibility with previous version and file structure 
+    moving existing cover images from the previous version of the workflow to the new folder structure
+    Note: this function can be removed in future versions
+    
+    """    
+    
+    # Get a list of all files in the parent folder
+    for file_name in os.listdir(parent_folder):
+        # Construct the full file path
+        file_path = os.path.join(parent_folder, file_name)
+
+        # Check if the file is an image (you can add more extensions if needed)
+        if os.path.isfile(file_path):
+            # Move the file to the subfolder
+            shutil.move(file_path, newFolder)
+            
+
+
+
 if not os.path.exists(CACHE_FOLDER):
     os.makedirs(CACHE_FOLDER)
 if not os.path.exists(CACHE_FOLDER_IMAGES_KINDLE):
     os.makedirs(CACHE_FOLDER_IMAGES_KINDLE)
+    move_images_to_newFolder(CACHE_FOLDER+"/images/", CACHE_FOLDER_IMAGES_KINDLE)
 if not os.path.exists(CACHE_FOLDER_IMAGES_IBOOKS):
     os.makedirs(CACHE_FOLDER_IMAGES_IBOOKS)
 

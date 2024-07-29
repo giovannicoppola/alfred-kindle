@@ -100,7 +100,7 @@ def get_kindleClassic (myFile, downloaded):
 			if not os.path.exists(ICON_PATH):
 				log ("retrieving image" + ICON_PATH)
 				try:
-					urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
+					urllib.request.urlretrieve(f"{MY_URL_STRING}{myBook['ASIN']}.01", ICON_PATH)
 				except urllib.error.URLError as e:
 					log("Error retrieving image:", e.reason)  # Log the specific error reason
 
