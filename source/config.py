@@ -1,4 +1,4 @@
-# CONFIG file for the kindle-eBooks workflow
+# CONFIG file for the alfred-eBooks workflow
 
 import os
 import sys
