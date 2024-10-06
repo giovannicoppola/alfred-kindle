@@ -45,6 +45,8 @@ def search_books(books, search_string):
 		books = [book for book in books if book.read_pct == '100.0%']
 	
 
+	
+
 	if GHOST_RESULTS == '0':
 		books = [book for book in books if book.loaned == 0]
 

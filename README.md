@@ -44,11 +44,12 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 ## Default settings 
 - In Alfred, open the 'Configure Workflow' menu in `alfred-eBooks` preferences
 	- set the keyword for the workflow (default: `!k`)
-	- set the keyword for the forced update (default: `::books-refresh`)
+	- set the keyword to force an update (default: `::books-refresh`)
 	- set the book content icon, i.e. if a book has been downloaded locally (default: 📘)
-	- set the 'ghost' book icon, i.e. if a book has bs not downloaded or previously loaned (default: 👻)
+	- set the 'ghost' book icon, i.e. if a book has not been downloaded or previously loaned (default: 👻)
 	- show 'ghost' books (i.e. books not downloaded, or previously loaned)? (default: yes)
 	- set target library (Kindle, Apple Books, or both. Default: 'Both')
+
 	_Note: `alfred-eBooks` will search for Kindle Classic and the (new) Kindle app. If both are installed, the latter with be used._
 	- set search scope (default: 'Title')
 		- `Title`: search titles only
@@ -59,20 +60,22 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 <h1 id="usage">Basic Usage 📖</h1>
 
 - launch with keyword (default: `!k`), or custom hotkey
+- enter a string to search, according to the scope set in `Workflow Configuration`. A few search operators are available:
+	- `--p` will filter for purchased books
+	- `--l` will filter for loaned books
+	- `--d` will filter for downloaded books
+	- `--k` will filter for Kindle books
+	- `--ib` will filter for Apple Books books
+	- `--read` will filter for read books
 - `enter` ↩️ will open the book in Apple Books (if downloaded) or the corresponding webpage on Amazon (if not downloaded)
-- data is cached for best performance. You can force a database refresh using the keyword `::books-refresh`
+- data is automatically cached for best performance. You can force a database refresh using the keyword `::books-refresh`
 
 
 
 <h1 id="known-issues">Limitations & known issues ⚠️</h1>
+
 - I could not figure out how to open a specific book in the Kindle app via command line. If you know how to do that, let me know!
-- I could not figure out how the Kindle app can tell if a book was first loaned, then purchased. Currently, if that is the case (i.e. a book was first loaned, then purchased), the book will appear as loaned, [unless it is not downloaded??]
-
-
-
-## old ones
-- None for now, but I have not done extensive testing, let me know if you see anything!
-- tested with ~100 books. The book list is currently created on the fly, and book covers are downloaded if missing. Might be slower if your library has thousands of books, in which case a sqlite database it might be more efficient. Let me know if that is the case! 
+- I could not figure out how the Kindle app can tell if a book was first loaned, then purchased. Currently, if that is the case (i.e. a book was first loaned, then purchased), the book will appear as loaned.
 - not tested thoroughly for user-uploaded documents.
 
 
@@ -84,6 +87,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-kindle/total
 
 <h1 id="changelog">Changelog 🧰</h1>
 
+- 10-07-2024: version 0.2: from kindle to eBooks
 - 02-28-2023: version 0.1
 
 

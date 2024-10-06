@@ -205,13 +205,13 @@ open "$1"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string># alfred-kindle 📚
-List and open your Kindle books with Alfred
+	<string># alfred-eBooks 📚
+List and open your Kindle and Apple Books ebooks with Alfred
 
 
 ## Motivation ✅
 
-- Quickly list, search, and open your Kindle books
+- Quickly list, search, and open your eBooks
 
 
 ## Setting up ⚙️
@@ -223,27 +223,39 @@ List and open your Kindle books with Alfred
 
 
 ### Default settings 
-- In Alfred, open the 'Configure Workflow' menu in `alfred-kindle` preferences
+- In Alfred, open the 'Configure Workflow' menu in `alfred-eBooks` preferences
 	- set the keyword for the workflow (default: `!k`)
+	- set the keyword to force an update (default: `::books-refresh`)
 	- set the book content icon, i.e. if a book has been downloaded locally (default: 📘)
+	- set the 'ghost' book icon, i.e. if a book has not been downloaded or previously loaned (default: 👻)
 	- show 'ghost' books (i.e. books not downloaded, or previously loaned)?  (default: yes)
+	- set target library (Kindle, Apple Books, or both. Default: 'Both')
 	- set search scope (default: 'Title')
 		- `Title`: search titles only
 		- `Author`: search authors only
 		- `Both`: search across titles and authors
 
+Note: `alfred-eBooks` will search for Kindle Classic and the (new) Kindle app. If both are installed, the latter with be used.
 
 ## Basic Usage 📖
 
 - launch with keyword (default: `!k`), or custom hotkey
-- `enter` ↩️ will open the book in Kindle (if downloaded) or the corresponding webpage on Amazon (if not downloaded)
-
+- enter a string to search, according to the scope set in `Workflow Configuration`. A few search operators are available:
+	- `--p` will filter for purchased books
+	- `--l` will filter for loaned books
+	- `--d` will filter for downloaded books
+	- `--k` will filter for Kindle books
+	- `--ib` will filter for Apple Books books
+	- `--read` will filter for read books
+- `enter` ↩️ will open the book in Apple Books (if downloaded) or the corresponding webpage on Amazon (if not downloaded)
+- data is automatically cached for best performance. You can force a database refresh using the keyword `::books-refresh`
 
 ## Limitations &amp; known issues ⚠️
 
-- None for now, but I have not done extensive testing, let me know if you see anything!
-- tested with ~100 books. The book list is currently created on the fly, and book covers are downloaded if missing. Might be slower if your library has thousands of books, in which case a sqlite database it might be more efficient. Let me know if that is the case! 
-- tested with Python 3.9.13
+- I could not figure out how to open a specific book in the Kindle app via command line. If you know how to do that, let me know!
+- I could not figure out how the Kindle app can tell if a book was first loaned, then purchased. Currently, if that is the case (i.e. a book was first loaned, then purchased), the book will appear as loaned.
+- not tested thoroughly for user-uploaded documents.
+
 
 
 ## Acknowledgments 😀
@@ -253,6 +265,7 @@ List and open your Kindle books with Alfred
 
 ## Changelog 🧰
 
+- 10-06-2024: version 0.2
 - 02-28-2023: version 0.1
 
 
@@ -264,30 +277,30 @@ Feedback welcome! If you notice a bug, or have ideas for new features, please fe
 		<key>BA9E997F-E08E-4947-BBB4-8BF84341ED1D</key>
 		<dict>
 			<key>xpos</key>
-			<real>170</real>
+			<real>210</real>
 			<key>ypos</key>
-			<real>340</real>
+			<real>115</real>
 		</dict>
 		<key>C201E860-5900-49B2-8980-4B8E5DA0A4C8</key>
 		<dict>
 			<key>xpos</key>
-			<real>685</real>
+			<real>725</real>
 			<key>ypos</key>
-			<real>340</real>
+			<real>115</real>
 		</dict>
 		<key>C4CF391F-F6A5-48BE-B5D0-B018D1393DA7</key>
 		<dict>
 			<key>xpos</key>
-			<real>420</real>
+			<real>460</real>
 			<key>ypos</key>
-			<real>555</real>
+			<real>330</real>
 		</dict>
 		<key>EFFEB21A-8303-4FE0-8B9D-0302BE4E21EA</key>
 		<dict>
 			<key>xpos</key>
-			<real>420</real>
+			<real>460</real>
 			<key>ypos</key>
-			<real>340</real>
+			<real>115</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
