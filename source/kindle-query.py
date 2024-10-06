@@ -2,218 +2,202 @@
 #Sunny ☀️   🌡️+44°F (feels +39°F, 41%) 🌬️↘2mph 🌗 Tue Feb 14 06:18:23 2023
 #W7Q1 – 45 ➡️ 319 – 279 ❇️ 85
 
-import requests
 import os
-import sqlite3
 import json
-from config import KINDLE_DB, log, XML_CACHE,KINDLE_CONTENT, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, CACHE_FOLDER_IMAGES,MY_URL_STRING, SEARCH_SCOPE
+from config import  log, KINDLE_APP, XML_CACHE,KINDLE_PATH, BOOK_CONTENT_SYMBOL,GHOST_RESULTS, SEARCH_SCOPE, IBOOKS_PATH, GHOST_SYMBOL, TIMESTAMP_KINDLE, TIMESTAMP_IBOOKS, KINDLE_PICKLE, IBOOKS_PICKLE, TARGET_LIBRARY
 from time import time
-import xmltodict
-import urllib.request
+
+
 import sys
+import json
+import pickle
+from kindle_fun import get_kindle, get_ibooks, checkTimeStamp, getDownloadedASINs, get_kindleClassic
+
 
 MYINPUT = sys.argv[1].casefold()
 
-    
-
-def getKindleDB():
-	'''
-	not used 
-	'''
-	db = sqlite3.connect(KINDLE_DB)
-	cursor = db.cursor()
-
-		
-		
-	queryString = f"""SELECT * FROM Book """
-		
-	
-	try:
-		cursor.execute(queryString)
-		
-		
-		result = [row[1] for row in cursor.fetchall()]
-		
-
-
-	except sqlite3.OperationalError as err:
-		result= {"items": [{
-		"title": "Error: " + str(err),
-		"subtitle": "Some error",
-		"arg": "",
-		"icon": {
-
-				"path": "icons/Warning.png"
-			}
-		}]}
-		print (json.dumps(result))
-		raise err
-
-	
-		
-
-	resultList = []
-	for i in range(0, len(result), 10):
-		resultList.append(','.join(str(x) for x in result[i:i+10]))
-
-	return resultList
 	
 
-
-def GetKindleData(myList):
-	"""
+def search_books(books, search_string):
+	if '--p' in search_string:
+		search_string = search_string.replace('--p', '')
+		books = [book for book in books if book.loaned != 1]
 	
-	A function to get kindle information using a third party API.
-	Currently not used in this workflow
-
-	"""
-	url = "https://amazon-product-price-data.p.rapidapi.com/product"
-
-	myResults = []
-	#querystring = {"asins":"B00JGAS65Q, B003EY7IQI, B004DEPH3E","locale":"US"}
-	for myBatch in myList: 
-		querystring = {"asins":myBatch,"locale":"US"}
-
-		headers = {
-			"X-RapidAPI-Key": "INSERT API KEY HERE",
-			"X-RapidAPI-Host": "amazon-product-price-data.p.rapidapi.com"
-		}
-
-		response = requests.request("GET", url, headers=headers, params=querystring)
-		myResults.append(response.json())
+	if '--l' in search_string:
+		search_string = search_string.replace('--l', '')
+		books = [book for book in books if book.loaned == 1]
 	
-	with open('kindle.json', 'w') as f:
-		json.dump(myResults, f,indent=4)
+	if '--d' in search_string:
+		search_string = search_string.replace('--d', '')
+		books = [book for book in books if book.downloaded == 1]
 	
-	return (myResults)
 
-def getDownloadedBooks(basepath):
+	if '--k' in search_string:
+		search_string = search_string.replace('--k', '')
+		books = [book for book in books if book.source == 'Kindle']
 	
-	myContentBooks = []
+	if '--ib' in search_string:
+		search_string = search_string.replace('--ib', '')
+		books = [book for book in books if book.source == 'iBooks']
 	
-	# List all subdirectories using scandir()
-	try:
-		with os.scandir(basepath) as entries:
-			for entry in entries:
-				if entry.is_dir():
-					myContentBooks.append(entry.name.split("_")[0])
-		return myContentBooks
-	except:
-		result= {"items": [{
-        "title": "Error: Cannot find Kindle directory",
-        "subtitle": basepath,
-        "arg": "",
-        "icon": {
+	if '--read' in search_string:
+		search_string = search_string.replace('--read', '')
+		books = [book for book in books if book.read_pct == '100.0%']
+	
 
-                "path": "icons/Warning.png"
-            }
-        }]}
-		print (json.dumps(result))
-
-def getXML(myFile, downloaded):
-## Importing the XML table
-    
-	with open(myFile) as xml_file:
-		data_dict = xmltodict.parse(xml_file.read())
-		xml_file.close()
-	
-	
-	result = {"items": []}
-	myBooks = data_dict['response']['add_update_list']['meta_data']
-	
-	for myBook in myBooks:
-		if isinstance(myBook['authors']['author'], list):
-			myBook ['authorString'] = " - ".join (str(auth['#text']) for auth in myBook['authors']['author'])
-			
-		else:
-			myBook ['authorString'] = myBook['authors']['author']['#text']
-
-	
-	if SEARCH_SCOPE == "Title":
-		myFilteredBooks = [i for i in myBooks if MYINPUT in i['title']['#text'].casefold()]
-		
-	elif SEARCH_SCOPE == "Author":
-		myFilteredBooks = [i for i in myBooks if (MYINPUT in i['authorString'].casefold())]	
-	elif SEARCH_SCOPE == "Both":
-		myFilteredBooks = [i for i in myBooks if (MYINPUT in i['authorString'].casefold()) or (MYINPUT in i['title']['#text'].casefold())]
 	
 
 	if GHOST_RESULTS == '0':
-		myFilteredBooks = [i for i in myFilteredBooks if (i['ASIN'] in downloaded)]
-	
-	if MYINPUT and not myFilteredBooks:
-		result["items"].append({
-			"title": "No matches in your library",
-			"subtitle": "Try a different query",
-			"arg": "",
-			"icon": {
-				"path": "icons/Warning.png"
-				}
-			
-				})
-		
+		books = [book for book in books if book.loaned == 0]
 
+	search_fragments = search_string.split()
+	if not search_fragments:
+		search_fragments = [""]
 
+	results = []
+	if not search_string:
+		return books	
 	
-	totalLibrary = (len(myFilteredBooks))
+	for book in books:
+		if SEARCH_SCOPE == "Title":
+			if any(fragment.lower() in book.title.lower() for fragment in search_fragments):
+				results.append(book)
+		elif SEARCH_SCOPE == "Author":
+			if any(fragment.lower() in book.author.lower() for fragment in search_fragments):
+				results.append(book)
+		elif SEARCH_SCOPE == "Both":
+			if all(fragment.lower() in book.title.lower() or fragment.lower() in book.author.lower() for fragment in search_fragments):
+				results.append(book)
+
+	return results
+
+def serveBooks(books, result):
 	myCounter = 0
-
-	for book in myFilteredBooks:
-		
-		
-		if book['ASIN'] in downloaded:
-			BookSymbol = BOOK_CONTENT_SYMBOL
-			bookURL = f"{KINDLE_CONTENT}{book['ASIN']}_EBOK/{book['ASIN']}_EBOK.azw"
-			ICON_PATH = f"{CACHE_FOLDER_IMAGES}{book['ASIN']}.01"
-			if not os.path.exists(ICON_PATH):
-				log ("retrieving image" + ICON_PATH)
-				try:
-					urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
-				except urllib.error.URLError as e:
-					log("Error retrieving image:", e.reason)  # Log the specific error reason
-		
-			
-		elif GHOST_RESULTS == '1':
-			BookSymbol = ""
-			bookURL = f"https://www.amazon.com/dp/{book['ASIN']}"
-			ICON_PATH = f"{CACHE_FOLDER_IMAGES}{book['ASIN']}.01"
-			if not os.path.exists(ICON_PATH):
-				log ("retrieving image" + ICON_PATH)
-				try:
-					urllib.request.urlretrieve(f"{MY_URL_STRING}{book['ASIN']}.01", ICON_PATH)
-				except urllib.error.URLError as e:
-					log("Error retrieving image:", e.reason)  # Log the specific error reason
-		
-		else:
-			continue
-		
-		
+	
+	for myBook in books:
+		loanedString = ""
+		downloadedString = ""
+	
 		myCounter += 1
+		if myBook.loaned == 1:
+			loanedString = GHOST_SYMBOL
+		if myBook.downloaded == 1:
+			downloadedString = BOOK_CONTENT_SYMBOL
+
+		# I currently can't figure out how to classify the books that were first loaned, then purchased. In case they were downloaded I can just remove the ghost symbol
+		if loanedString == GHOST_SYMBOL and downloadedString == BOOK_CONTENT_SYMBOL:
+			loanedString = ""
+		booksN = len(books)
+		
+		if myBook.read_pct == "100.0%":
+			readPct = "✅️"
+		elif myBook.read_pct != "0%":
+			readPct = myBook.read_pct
+		else:
+			readPct = ""
+		
+		
+		
 		result["items"].append({
-			"title": book['title']['#text']+BookSymbol,
-			'subtitle': f"{myCounter}/{totalLibrary} {book['authorString']}",
+			"title": f"{myBook.title} {loanedString} {downloadedString}",
+			'subtitle': f"{myCounter}/{booksN:,} – {myBook.author} {readPct}",
 			'valid': True,
-			
 			"icon": {
-				"path": ICON_PATH	
+				"path": myBook.icon_path
+				
 			},
-			'arg': bookURL
-				}) 
+			"mods": {
+				"cmd": {
+					"valid": True,
+					"subtitle": myBook.icon_path
+			}},
+			'arg': myBook.path
+		})
 	
+
+
+	if not books:
+		result["items"].append({
+			"title": f"No results!",
+			'subtitle': f"query again",
+			'valid': True,
+			"icon": {
+				"path": f'icons/Warning.png'
+			},
+			'arg': "resultString"
+		})
 	
-	
-	print (json.dumps(result))
-	
-    
-    
+	return result
+
+
+
 
 def main():
 	main_start_time = time()
-	myContentBooks = getDownloadedBooks (KINDLE_CONTENT)
-	getXML(XML_CACHE, myContentBooks)
 	
+	myBooks = []
+	if TARGET_LIBRARY in ["Kindle", "Both"]:
+		if KINDLE_APP == "classic":
+
+			myContentBooks = getDownloadedASINs(KINDLE_PATH) # output is a list of downloaded book ASINs
+			#log(myContentBooks)
+			get_kindleClassic(XML_CACHE, myContentBooks)
+			with open(KINDLE_PICKLE, 'rb') as file:
+				myBooks = myBooks + pickle.load(file)
+
+
+		elif KINDLE_APP == "new":
+
+
+			
+			if not os.path.exists(KINDLE_PICKLE):
+				log ("building new kindle database")
+				get_kindle(KINDLE_PATH)
+				
+			elif checkTimeStamp(KINDLE_PATH,TIMESTAMP_KINDLE):
+				log ("outdated, building new kindle database")
+				get_kindle(KINDLE_PATH)
+				
+			else:
+				log ("using existing Kindle database")
+				# Load the list of books from the file
+			
+			with open(KINDLE_PICKLE, 'rb') as file:
+				myBooks = myBooks + pickle.load(file)
+			
+
+
+	if TARGET_LIBRARY in ["iBooks", "Both"]:
+		if not os.path.exists(IBOOKS_PICKLE):
+				log ("building new iBooks database")
+				get_ibooks(IBOOKS_PATH)
+				
+		elif checkTimeStamp(IBOOKS_PATH,TIMESTAMP_IBOOKS):
+			log ("outdated, building new iBooks database")
+			get_ibooks(IBOOKS_PATH)
+			
+		else:
+			log ("using existing iBooks database")
+			# Load the list of books from the file
+		
+		with open(IBOOKS_PICKLE, 'rb') as file:
+			myBooks = myBooks + pickle.load(file)
+
+			
+	
+	# Search the books
+	myBooks = search_books(myBooks, MYINPUT)
+
+	result = {"items": []}
+	result = serveBooks(myBooks, result)
+	print (json.dumps(result))
+
+
 	main_timeElapsed = time() - main_start_time
 	log(f"\nscript duration: {round (main_timeElapsed,3)} seconds")
-    
+
 if __name__ == '__main__':
-    main ()
+	main ()
+
+
+

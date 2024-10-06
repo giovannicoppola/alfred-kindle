@@ -38,68 +38,13 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string>Browse and open your Kindle books</string>
+	<string>Browse and open your eBooks with Alfred</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>alfred-kindle</string>
+	<string>eBooks</string>
 	<key>objects</key>
 	<array>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>0</integer>
-				<key>focusedappvariable</key>
-				<false/>
-				<key>focusedappvariablename</key>
-				<string></string>
-				<key>hotkey</key>
-				<integer>0</integer>
-				<key>hotmod</key>
-				<integer>0</integer>
-				<key>hotstring</key>
-				<string></string>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-				<key>relatedAppsMode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>BA9E997F-E08E-4947-BBB4-8BF84341ED1D</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>query=$1
-open "$1"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>5</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>C201E860-5900-49B2-8980-4B8E5DA0A4C8</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -129,9 +74,8 @@ open "$1"</string>
 				<string>⏳...fetching Kindle info...</string>
 				<key>script</key>
 				<string>query=$1
-export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 export PYTHONPATH="$PWD/lib"
-python3 kindle-query.py "$1"
+/usr/bin/python3 kindle-query.py "$1"
 </string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
@@ -153,15 +97,121 @@ python3 kindle-query.py "$1"
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>query=$1
+open "$1"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>5</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>C201E860-5900-49B2-8980-4B8E5DA0A4C8</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>40</integer>
+				<key>hotmod</key>
+				<integer>524288</integer>
+				<key>hotstring</key>
+				<string>K</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>BA9E997F-E08E-4947-BBB4-8BF84341ED1D</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>{var:refreshkeyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>⏳...please wait while I refresh...</string>
+				<key>script</key>
+				<string>export PYTHONPATH="$PWD/lib"
+/usr/bin/python3 library-rebuild.py
+</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>refresh library database 👀</string>
+				<key>type</key>
+				<integer>5</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>C4CF391F-F6A5-48BE-B5D0-B018D1393DA7</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
 	</array>
 	<key>readme</key>
-	<string># alfred-kindle 📚
-List and open your Kindle books with Alfred
+	<string># alfred-eBooks 📚
+List and open your Kindle and Apple Books ebooks with Alfred
 
 
 ## Motivation ✅
 
-- Quickly list, search, and open your Kindle books
+- Quickly list, search, and open your eBooks
 
 
 ## Setting up ⚙️
@@ -173,27 +223,39 @@ List and open your Kindle books with Alfred
 
 
 ### Default settings 
-- In Alfred, open the 'Configure Workflow' menu in `alfred-kindle` preferences
+- In Alfred, open the 'Configure Workflow' menu in `alfred-eBooks` preferences
 	- set the keyword for the workflow (default: `!k`)
+	- set the keyword to force an update (default: `::books-refresh`)
 	- set the book content icon, i.e. if a book has been downloaded locally (default: 📘)
+	- set the 'ghost' book icon, i.e. if a book has not been downloaded or previously loaned (default: 👻)
 	- show 'ghost' books (i.e. books not downloaded, or previously loaned)?  (default: yes)
+	- set target library (Kindle, Apple Books, or both. Default: 'Both')
 	- set search scope (default: 'Title')
 		- `Title`: search titles only
 		- `Author`: search authors only
 		- `Both`: search across titles and authors
 
+Note: `alfred-eBooks` will search for Kindle Classic and the (new) Kindle app. If both are installed, the latter with be used.
 
 ## Basic Usage 📖
 
 - launch with keyword (default: `!k`), or custom hotkey
-- `enter` ↩️ will open the book in Kindle (if downloaded) or the corresponding webpage on Amazon (if not downloaded)
-
+- enter a string to search, according to the scope set in `Workflow Configuration`. A few search operators are available:
+	- `--p` will filter for purchased books
+	- `--l` will filter for loaned books
+	- `--d` will filter for downloaded books
+	- `--k` will filter for Kindle books
+	- `--ib` will filter for Apple Books books
+	- `--read` will filter for read books
+- `enter` ↩️ will open the book in Apple Books (if downloaded) or the corresponding webpage on Amazon (if not downloaded)
+- data is automatically cached for best performance. You can force a database refresh using the keyword `::books-refresh`
 
 ## Limitations &amp; known issues ⚠️
 
-- None for now, but I have not done extensive testing, let me know if you see anything!
-- tested with ~100 books. The book list is currently created on the fly, and book covers are downloaded if missing. Might be slower if your library has thousands of books, in which case a sqlite database it might be more efficient. Let me know if that is the case! 
-- tested with Python 3.9.13
+- I could not figure out how to open a specific book in the Kindle app via command line. If you know how to do that, let me know!
+- I could not figure out how the Kindle app can tell if a book was first loaned, then purchased. Currently, if that is the case (i.e. a book was first loaned, then purchased), the book will appear as loaned.
+- not tested thoroughly for user-uploaded documents.
+
 
 
 ## Acknowledgments 😀
@@ -203,6 +265,7 @@ List and open your Kindle books with Alfred
 
 ## Changelog 🧰
 
+- 10-06-2024: version 0.2
 - 02-28-2023: version 0.1
 
 
@@ -214,23 +277,30 @@ Feedback welcome! If you notice a bug, or have ideas for new features, please fe
 		<key>BA9E997F-E08E-4947-BBB4-8BF84341ED1D</key>
 		<dict>
 			<key>xpos</key>
-			<real>170</real>
+			<real>210</real>
 			<key>ypos</key>
-			<real>340</real>
+			<real>115</real>
 		</dict>
 		<key>C201E860-5900-49B2-8980-4B8E5DA0A4C8</key>
 		<dict>
 			<key>xpos</key>
-			<real>685</real>
+			<real>725</real>
 			<key>ypos</key>
-			<real>340</real>
+			<real>115</real>
+		</dict>
+		<key>C4CF391F-F6A5-48BE-B5D0-B018D1393DA7</key>
+		<dict>
+			<key>xpos</key>
+			<real>460</real>
+			<key>ypos</key>
+			<real>330</real>
 		</dict>
 		<key>EFFEB21A-8303-4FE0-8B9D-0302BE4E21EA</key>
 		<dict>
 			<key>xpos</key>
-			<real>420</real>
+			<real>460</real>
 			<key>ypos</key>
-			<real>340</real>
+			<real>115</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -281,6 +351,27 @@ Feedback welcome! If you notice a bug, or have ideas for new features, please fe
 			<key>config</key>
 			<dict>
 				<key>default</key>
+				<string>👻</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Icon to show if the book was previously loaned</string>
+			<key>label</key>
+			<string>Ghost Content Icon</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>GhostContent</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
 				<true/>
 				<key>required</key>
 				<false/>
@@ -326,11 +417,62 @@ Feedback welcome! If you notice a bug, or have ideas for new features, please fe
 			<key>variable</key>
 			<string>SEARCH_SCOPE</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>Kindle</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Kindle</string>
+						<string>Kindle</string>
+					</array>
+					<array>
+						<string>Apple Books</string>
+						<string>iBooks</string>
+					</array>
+					<array>
+						<string>Both</string>
+						<string>Both</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Search across Kindle, Apple Books, or both.</string>
+			<key>label</key>
+			<string>Target library</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>TARGET_LIBRARY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>::books-refresh</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Refresh book library databases</string>
+			<key>label</key>
+			<string>Force refresh keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>refreshkeyword</string>
+		</dict>
 	</array>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>0.1.1</string>
+	<string>0.2</string>
 	<key>webaddress</key>
 	<string>https://github.com/giovannicoppola/alfred-kindle</string>
 </dict>

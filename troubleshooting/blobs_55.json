@@ -1,0 +1,157 @@
+BLOB example for a borrowed book
+Titan: The Life of John D. Rockefeller, Sr.
+{
+    "$version": 100000,
+    "$archiver": "NSKeyedArchiver",
+    "$top": {
+        "root": "Uid(1)"
+    },
+    "$objects": [
+        "$null",
+        {
+            "attributes": "Uid(2)",
+            "$class": "Uid(43)"
+        },
+        {
+            "NS.keys": [
+                "Uid(3)",
+                "Uid(4)",
+                "Uid(5)",
+                "Uid(6)",
+                "Uid(7)",
+                "Uid(8)",
+                "Uid(9)",
+                "Uid(10)",
+                "Uid(11)",
+                "Uid(12)",
+                "Uid(13)"
+            ],
+            "NS.objects": [
+                "Uid(14)",
+                "Uid(15)",
+                "Uid(16)",
+                "Uid(20)",
+                "Uid(28)",
+                "Uid(29)",
+                "Uid(32)",
+                "Uid(33)",
+                "Uid(34)",  element 11, origins
+                "Uid(41)", element 12, purchase date
+                "Uid(42)"
+            ],
+            "$class": "Uid(19)"
+        },
+        "content_type",
+        "ASIN",
+        "authors",
+        "bisac_subject_description_code",
+        "content_size",
+        "publishers",
+        "title", # element 09
+        "cde_contenttype",
+        "origins", # element 11
+        "purchase_date",
+        "publication_date",
+        "application/x-mobipocket-ebook",
+        "B000XUDGHG",
+        {
+            "NS.keys": [
+                "Uid(17)"
+            ],
+            "NS.objects": [
+                "Uid(18)"
+            ],
+            "$class": "Uid(19)"
+        },
+        "author",
+        "Chernow, Ron",
+        {
+            "$classname": "NSMutableDictionary",
+            "$classes": [
+                "NSMutableDictionary",
+                "NSDictionary",
+                "NSObject"
+            ]
+        },
+        {
+            "NS.keys": [
+                "Uid(21)"
+            ],
+            "NS.objects": [
+                "Uid(22)"
+            ],
+            "$class": "Uid(19)"
+        },
+        "code",
+        {
+            "NS.objects": [
+                "Uid(23)",
+                "Uid(23)",
+                "Uid(24)",
+                "Uid(25)",
+                "Uid(26)"
+            ],
+            "$class": "Uid(27)"
+        },
+        "BIO003000",
+        "BUS077000",
+        "BUS023000",
+        "BIO006000",
+        {
+            "$classname": "NSMutableArray",
+            "$classes": [
+                "NSMutableArray",
+                "NSArray",
+                "NSObject"
+            ]
+        },
+        "16697344",
+        {
+            "NS.keys": [
+                "Uid(30)"
+            ],
+            "NS.objects": [
+                "Uid(31)"
+            ],
+            "$class": "Uid(19)"
+        },
+        "publisher",
+        "Vintage",
+        "Titan: The Life of John D. Rockefeller, Sr.",
+        "EBOK",
+        {   # element 34 (origins)
+            "NS.keys": [
+                "Uid(35)"
+            ],
+            "NS.objects": [
+                "Uid(36)"
+            ],
+            "$class": "Uid(19)"
+        },
+        "origin",
+        {
+            "NS.keys": [
+                "Uid(37)",
+                "Uid(38)"
+            ],
+            "NS.objects": [
+                "Uid(39)",
+                "Uid(40)"
+            ],
+            "$class": "Uid(19)"
+        },
+        "type", # element 37
+        "id", # element 38
+        "PublicLibraryLending", #element 39 (type)
+        "A2YKO56D6DCI2V", #element 40 (id)
+        "2023-04-02T10:38:29+0000",
+        "2007-12-18T00:00:00+0000",
+        {
+            "$classname": "SyncMetadataAttributes",
+            "$classes": [
+                "SyncMetadataAttributes",
+                "NSObject"
+            ]
+        }
+    ]
+}
